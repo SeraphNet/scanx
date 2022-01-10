@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ScanX.Core.Models
+﻿namespace ScanX.Core.Models
 {
     public class ScanSetting
     {
@@ -11,7 +7,7 @@ namespace ScanX.Core.Models
         public const int WIA_COLOR_MODE = 6146;
 
         public const int WIA_HORIZONTAL_EXTENT = 6151;
-        
+
         public const int WIA_VERTICAL_EXTENT = 6152;
 
         public const int WIA_VERTICAL_RESOLUTION = 6148;
@@ -25,7 +21,7 @@ namespace ScanX.Core.Models
         public const int WIA_THRESHOLD = 6159;
 
         public const int WIA_ITEM_SIZE = 4116;
-        
+
         public enum DPI
         {
             DPI_72 = 72,
@@ -54,9 +50,9 @@ namespace ScanX.Core.Models
         public int Threshold { get; set; }
 
         //for more info https://www.papersizes.org/a-sizes-in-pixels.htm
-        public static (int width,int height) GetA4SizeByDpi(int dpiValue)
+        public static (int width, int height) GetA4SizeByDpi(int dpiValue)
         {
-            
+
             var dpi = (DPI)dpiValue;
 
             switch (dpi)
@@ -79,7 +75,7 @@ namespace ScanX.Core.Models
 
                 default:
 
-                    return (794,1123);
+                    return (794, 1123);
             }
         }
 

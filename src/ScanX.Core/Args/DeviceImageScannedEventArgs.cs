@@ -1,10 +1,5 @@
 ﻿using ScanX.Core.Models;
 using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.IO;
-using System.Text;
 
 namespace ScanX.Core.Args
 {
@@ -60,6 +55,6 @@ namespace ScanX.Core.Args
 
             return result;
         }
-        
+
     }
 }

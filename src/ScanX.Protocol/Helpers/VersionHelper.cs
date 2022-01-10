@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace ScanX.Protocol.Helpers
+﻿namespace ScanX.Protocol.Helpers
 {
     public class VersionHelper
     {
-        public static string Version => "1.8.0";
+        public static string Version => "1.8.3";
     }
 }

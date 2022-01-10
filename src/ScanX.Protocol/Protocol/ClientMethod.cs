@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace ScanX.Protocol.Protocol
+﻿namespace ScanX.Protocol.Protocol
 {
     public class ClientMethod
     {

@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using ScanX.Core;
 using ScanX.Protocol.Protocol;
 
@@ -33,7 +27,7 @@ namespace ScanX.Protocol
                     .WithOrigins("*");
                 }));
 
-            services.AddSignalR(opt=>
+            services.AddSignalR(opt =>
             {
                 opt.EnableDetailedErrors = true;
             });
@@ -70,9 +64,9 @@ namespace ScanX.Protocol
                   name: "default",
                   pattern: "{controller=Home}/{action=Index}/{id?}");
 
-                endpoints.MapHub<ScanXProtocol>("/scanx",config=>
-                {
-                });
+                endpoints.MapHub<ScanXProtocol>("/scanx", config =>
+                 {
+                 });
             });
         }
     }

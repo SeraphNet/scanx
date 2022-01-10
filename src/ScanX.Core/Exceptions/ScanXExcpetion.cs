@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace ScanX.Core.Exceptions
 {
@@ -38,12 +36,12 @@ namespace ScanX.Core.Exceptions
 
         }
 
-        public ScanXException(string message,ScanXExceptionCodes code) : base(message)
+        public ScanXException(string message, ScanXExceptionCodes code) : base(message)
         {
             this.Code = code;
         }
 
-        public ScanXException(string message, Exception inner,ScanXExceptionCodes code) : base(message, inner)
+        public ScanXException(string message, Exception inner, ScanXExceptionCodes code) : base(message, inner)
         {
             this.Code = code;
         }

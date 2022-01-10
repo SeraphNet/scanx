@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using ScanX.Core;
 using ScanX.Core.Models;
 using ScanX.Protocol.ViewModels;
+using System.Collections.Generic;
 
 namespace ScanX.Protocol.Controllers
 {
@@ -37,10 +34,10 @@ namespace ScanX.Protocol.Controllers
             {
                 result = client.GetAllScanners();
             }
-            
+
             return View(result);
         }
-        
+
         public IActionResult Documentation()
         {
             return View();

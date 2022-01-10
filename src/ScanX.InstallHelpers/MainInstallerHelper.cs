@@ -2,9 +2,7 @@
 using System.Collections;
 using System.ComponentModel;
 using System.IO;
-using System.IO.Compression;
 using System.Reflection;
-using System.Text;
 using System.Windows;
 
 namespace ScanX.InstallHelpers
@@ -33,15 +31,9 @@ namespace ScanX.InstallHelpers
         {
             base.OnAfterInstall(savedState);
 
-            var zipPath = Path.Combine(GetPath(), "Scanx.zip");
 
-            var protocolFolderPath = GetProtocolFolderPath();
+            string servicePath = Path.Combine("ScanX.Protocol.exe");
 
-            ZipFile.ExtractToDirectory(zipPath, protocolFolderPath);
-
-
-            string servicePath = Path.Combine(protocolFolderPath, "ScanX.Protocol.exe");
-            
             ServiceHelper.InstallService(servicePath);
             ServiceHelper.StartService();
         }
@@ -58,7 +50,7 @@ namespace ScanX.InstallHelpers
         {
             base.OnAfterUninstall(savedState);
 
-            
+
             ServiceHelper.DeleteService();
 
             try
@@ -100,7 +92,7 @@ namespace ScanX.InstallHelpers
             {
                 MessageBox.Show(ex.ToString());
             }
-            
+
         }
     }
 }

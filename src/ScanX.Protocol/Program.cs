@@ -1,16 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.DependencyInjection;
-
-using Microsoft.Extensions.Logging;
-using Microsoft.AspNetCore.Hosting;
 
 namespace ScanX.Protocol
 {
@@ -28,7 +17,7 @@ namespace ScanX.Protocol
             .ConfigureWebHostDefaults(webBuilder =>
             {
                 webBuilder.UseStartup<Startup>();
-                webBuilder.UseUrls("http://*:61234");
+                webBuilder.UseUrls("http://localhost:61234");
             });
 
     }

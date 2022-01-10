@@ -77,6 +77,7 @@ namespace ScanX.App.ViewModels
             {
                 Properties.Add(item);
             }
+            await Task.CompletedTask;
         }
         
         private async Task ListScanners()

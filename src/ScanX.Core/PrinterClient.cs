@@ -8,11 +8,10 @@ using System.Drawing.Printing;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
 
 namespace ScanX.Core
 {
-    public class PrinterClient : IDisposable , IPrinterClient
+    public class PrinterClient : IDisposable, IPrinterClient
     {
         private readonly PrinterSettings _defaultPrinterSettings;
         private readonly ILogger<PrinterClient> _logger;
@@ -25,7 +24,7 @@ namespace ScanX.Core
             _logger = logger;
 
             _defaultPrinterSettings = new PrinterSettings();
-            
+
             _printDocument = new PrintDocument();
 
             _printDocument.PrintPage += OnPrintingPage;
@@ -36,7 +35,7 @@ namespace ScanX.Core
             return _defaultPrinterSettings.PrinterName;
         }
 
-        public void Print(byte[] imageToPrint,PrintSettings settings)
+        public void Print(byte[] imageToPrint, PrintSettings settings)
         {
 
             var defaultPrinterSettings = new PrinterSettings();
@@ -53,7 +52,7 @@ namespace ScanX.Core
             _printDocument.PrinterSettings = zebraPrinterSettings;
             _printDocument.DefaultPageSettings.Margins = new Margins(margin.Left, margin.Right, margin.Top, margin.Bottom);
             _printDocument.Print();
-            
+
             SetDefaultPrinter(defaultPrinterName);
         }
 
@@ -68,11 +67,11 @@ namespace ScanX.Core
                 var topMargin = e.MarginBounds.Top;
                 var bottomMargin = e.MarginBounds.Bottom;
 
-                
+
 
                 var img = Image.FromStream(_ms);
 
-                e.Graphics.DrawImage(img,leftMargin,topMargin,_currentSettings.Width,_currentSettings.Height);
+                e.Graphics.DrawImage(img, leftMargin, topMargin, _currentSettings.Width, _currentSettings.Height);
             }
             catch (Exception)
             {
@@ -82,7 +81,7 @@ namespace ScanX.Core
             {
                 _ms.Flush();
             }
-            
+
         }
 
         [DllImport("winspool.drv", CharSet = CharSet.Auto, SetLastError = true)]

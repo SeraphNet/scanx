@@ -1,19 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing.Printing;
-using System.Text;
-using System.Linq;
-using System.Management;
-using WIA;
-using ScanX.Core.Models;
-using System.Runtime.InteropServices;
+﻿using Microsoft.Extensions.Logging;
 using ScanX.Core.Args;
-using System.Drawing;
-using System.Diagnostics;
-using System.IO;
-using System.Drawing.Imaging;
 using ScanX.Core.Exceptions;
-using Microsoft.Extensions.Logging;
+using ScanX.Core.Models;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.Drawing.Printing;
+using System.IO;
+using System.Linq;
+using System.Runtime.InteropServices;
+using WIA;
 
 namespace ScanX.Core
 {
@@ -258,7 +256,7 @@ namespace ScanX.Core
             IDeviceInfo device = GetDeviceById(id);
 
             var connectedDevice = device.Connect();
-            
+
             foreach (IProperty item in connectedDevice.Items[1].Properties)
             {
                 result.Add(new DeviceProperty()
@@ -306,7 +304,7 @@ namespace ScanX.Core
             SetWIAProperty(properties, ScanSetting.WIA_ITEM_SIZE, 0);
 
             SetWIAProperty(properties, ScanSetting.WIA_PAGE_SIZE, 3);
-            
+
             SetWIAProperty(properties, ScanSetting.WIA_HORIZONTAL_RESOLUTION, resoultions);
 
             SetWIAProperty(properties, ScanSetting.WIA_VERTICAL_RESOLUTION, resoultions);

@@ -6,10 +6,8 @@ using ScanX.Core.Args;
 using ScanX.Core.Exceptions;
 using ScanX.Core.Models;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace ScanX.Protocol.Protocol
@@ -44,7 +42,7 @@ namespace ScanX.Protocol.Protocol
             var imagesPath = Path.Combine(dir, "wwwroot", "images");
 
             await Clients.Caller.SendAsync(ClientMethod.ON_LOG, imagesPath);
-            
+
             var img1 = File.ReadAllBytes($"{imagesPath}\\1.png");
             var img2 = File.ReadAllBytes($"{imagesPath}\\2.png");
             var img3 = File.ReadAllBytes($"{imagesPath}\\3.png");
@@ -70,7 +68,7 @@ namespace ScanX.Protocol.Protocol
             await Clients.Caller.SendAsync(ClientMethod.ON_SCAN_FINISHED);
         }
 
-        public async Task ScanSingle(string deviceId,ScanSetting settings)
+        public async Task ScanSingle(string deviceId, ScanSetting settings)
         {
             using (DeviceClient client = new DeviceClient(_logger))
             {
@@ -81,8 +79,8 @@ namespace ScanX.Protocol.Protocol
                 await Clients.Caller.SendAsync(ClientMethod.ON_SCAN_FINISHED);
             }
         }
-        
-        public async Task ScanMultiple(string deviceId,ScanSetting settings)
+
+        public async Task ScanMultiple(string deviceId, ScanSetting settings)
         {
             using (DeviceClient client = new DeviceClient(_logger))
             {
@@ -94,7 +92,7 @@ namespace ScanX.Protocol.Protocol
                 await Clients.Caller.SendAsync(ClientMethod.ON_SCAN_FINISHED);
             }
         }
-        
+
         private async Task TryInvoke(Action action)
         {
             try

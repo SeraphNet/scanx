@@ -2,10 +2,8 @@
 using System.Collections;
 using System.ComponentModel;
 using System.IO;
-using System.IO.Compression;
 using System.Reflection;
-using System.Text;
-using System.Windows;
+
 
 namespace ScanX.InstallHelpers
 {
@@ -14,7 +12,6 @@ namespace ScanX.InstallHelpers
     {
         public MainInstallerHelper()
         {
-            InitializeComponent();
         }
 
         public override void Install(IDictionary stateSaver)
@@ -31,13 +28,15 @@ namespace ScanX.InstallHelpers
 
         protected override void OnAfterInstall(IDictionary savedState)
         {
-            base.OnAfterInstall(savedState);
 
 
-            string servicePath = Path.Combine(GetPath()+ "\\Protocol\\ScanX.Protocol.exe");
-            
+            string servicePath = Path.Combine(GetPath(), "ScanX.Protocol.exe");
+
+
             ServiceHelper.InstallService(servicePath);
             ServiceHelper.StartService();
+            base.OnAfterInstall(savedState);
+
         }
 
         protected override void OnBeforeUninstall(IDictionary savedState)
@@ -52,19 +51,19 @@ namespace ScanX.InstallHelpers
         {
             base.OnAfterUninstall(savedState);
 
-            
-            ServiceHelper.DeleteService();
+
 
             try
             {
+                ServiceHelper.DeleteService();
                 var path = GetProtocolFolderPath();
 
                 if (Directory.Exists(path))
                     Directory.Delete(path, true);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                System.Windows.Forms.MessageBox.Show(ex.ToString());
             }
         }
 
@@ -90,11 +89,10 @@ namespace ScanX.InstallHelpers
                 ServiceHelper.StopService();
                 ServiceHelper.DeleteService();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                MessageBox.Show(ex.ToString());
             }
-            
+
         }
     }
 }

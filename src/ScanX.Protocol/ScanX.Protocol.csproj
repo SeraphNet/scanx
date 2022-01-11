@@ -20,4 +20,14 @@
     <Folder Include="Properties\PublishProfiles\" />
   </ItemGroup>
 
+  
+  <ItemGroup>
+    <Reference Include="CustomMarshalers">
+      <HintPath>..\..\lib\64-bit\CustomMarshalers.dll</HintPath>
+    </Reference>
+    <Reference Include="Interop.WIA">
+      <HintPath>..\..\lib\Interop.WIA.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

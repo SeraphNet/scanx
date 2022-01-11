@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.0.32014.148
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScanX.Protocol", "ScanX.Protocol\ScanX.Protocol.csproj", "{2ED2DFF1-0ABA-4723-B0EE-5353CBAC218C}"
+	ProjectSection(ProjectDependencies) = postProject
+		{D32D3EF9-7110-41DA-93CF-350F45DA6BB4} = {D32D3EF9-7110-41DA-93CF-350F45DA6BB4}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScanX.Core", "ScanX.Core\ScanX.Core.csproj", "{892AA8C7-018E-41A1-BEBF-25F46F2CC8FC}"
 EndProject

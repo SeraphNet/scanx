@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Diagnostics;
 
 namespace ScanX.InstallHelpers
 {
@@ -28,6 +23,17 @@ namespace ScanX.InstallHelpers
                 process.Start();
 
                 process.WaitForExit();
+
+                ProcessStartInfo setDescription = new ProcessStartInfo()
+                {
+                    FileName = "cmd.exe",
+                    Arguments = $"/C sc description {_serviceName} \"Provides Scanning Interface for Trustee Scanning App\""
+                };
+
+                process.StartInfo = setDescription;
+                process.Start();
+                process.WaitForExit();
+
 
             }
         }

@@ -22,6 +22,7 @@ namespace ScanX.Core
         public const uint WIA_ERROR_COVER_OPEN = 0x80210016;
         public const uint WIA_ERROR_DEVICE_COMMUNICATION = 0x8021000A;
         public const uint WIA_ERROR_DEVICE_LOCKED = 0x8021000D;
+        public const uint WIA_ERROR_SCANNER_JAM = 0x80210002;
 
         public object WIA_IPS_BRIGHTNESS { get; private set; }
 
@@ -90,7 +91,7 @@ namespace ScanX.Core
 
             IDeviceInfo device = GetDeviceById(deviceID);
 
-            Device connectedDevice = null;
+            Device connectedDevice;
 
             try
             {
@@ -122,20 +123,88 @@ namespace ScanX.Core
             }
         }
 
+        private Bitmap CropImage(ImageFile image)
+        {
+            var imageBytes = (byte[])image.FileData.get_BinaryData();
+            var ms = new MemoryStream(imageBytes);
+            var img = Image.FromStream(ms);
+            int Height = img.Height;
+            int Width = img.Width;
+
+            Bitmap bm = new Bitmap(img);
+
+
+
+            Func<int, bool> IsAllWhiteRow = row =>
+            {
+                for (int i = 0; i < Width; i += 2)
+                {
+                    if (bm.GetPixel(i, row).R != 255)
+                    {
+                        return false;
+                    }
+                }
+                return true;
+            };
+
+            int leftMost = 0;
+
+            int rightMost = Width - 1;
+
+            int topMost = 0;            
+
+            int bottomMost = Height - 1; 
+            for (int row = bottomMost; row > 0; row -= 1)
+            {
+                if (IsAllWhiteRow(row)) bottomMost = row - 1;
+                else break;
+            }
+
+            if (rightMost == 0 && bottomMost == 0 && leftMost == Width && topMost == Height)
+            {
+                return bm;
+            }
+
+            int croppedWidth = rightMost - leftMost + 1;
+            int croppedHeight = bottomMost - topMost + 1;
+            try
+            {
+                Bitmap target = new Bitmap(croppedWidth, croppedHeight);
+                using (Graphics g = Graphics.FromImage(target))
+                {
+                    g.DrawImage(bm,
+                            new RectangleF(0, 0, croppedWidth, croppedHeight),
+                            new RectangleF(leftMost, topMost, croppedWidth, croppedHeight),
+                            GraphicsUnit.Pixel);
+                }
+                return target;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(string.Format("Values are top={0} bottom={1} left={2} right={3}", topMost, bottomMost, leftMost, rightMost), ex);
+            }
+
+        }
+        public static byte[] ImageToByte(Image img)
+        {
+            using (var stream = new MemoryStream())
+            {
+                img.Save(stream, ImageFormat.Png);
+                return stream.ToArray();
+            }
+        }
         private int ScanImage(Device connectedDevice, int page, ScanSetting setting)
         {
-            var img = (ImageFile)connectedDevice.Items[1].Transfer(FormatID.wiaFormatJPEG);
+            var img = (ImageFile)connectedDevice.Items[1].Transfer(FormatID.wiaFormatPNG);
 
-            byte[] data = (byte[])img.FileData.get_BinaryData();
+            Bitmap cropped = CropImage(img);
 
-            byte[] dataConverted = null;
+            byte[] dataConverted = ImageToByte(cropped);
 
-            dataConverted = CompressImageBytes(data);
-
-            var args = new DeviceImageScannedEventArgs(dataConverted, img.FileExtension, page)
+            var args = new DeviceImageScannedEventArgs(dataConverted, "png", page)
             {
-                Height = img.Height,
-                Width = img.Width,
+                Height = cropped.Height,
+                Width = cropped.Width,
                 Settings = setting
             };
 
@@ -145,19 +214,6 @@ namespace ScanX.Core
             return page;
         }
 
-        private byte[] CompressImageBytes(byte[] data)
-        {
-            byte[] dataConverted;
-            using (MemoryStream writeMs = new MemoryStream())
-            using (MemoryStream ms = new MemoryStream(data))
-            {
-                Bitmap bit = new Bitmap(ms);
-                bit.Save(writeMs, ImageFormat.Jpeg);
-                dataConverted = writeMs.ToArray();
-            }
-
-            return dataConverted;
-        }
 
         public void ScanWithUI(int deviceID)
         {
@@ -295,25 +351,20 @@ namespace ScanX.Core
         private void SetDeviceSettings(Device connectedDevice, ScanSetting setting)
         {
 
-            var (width, height) = ScanSetting.GetA4SizeByDpi((int)setting.Dpi);
-
-            var resoultions = ScanSetting.GetResolution(setting.Dpi);
 
             var properties = connectedDevice.Items[1].Properties;
 
             SetWIAProperty(properties, ScanSetting.WIA_ITEM_SIZE, 0);
 
-            SetWIAProperty(properties, ScanSetting.WIA_PAGE_SIZE, 3);
-
-            SetWIAProperty(properties, ScanSetting.WIA_HORIZONTAL_RESOLUTION, resoultions);
-
-            SetWIAProperty(properties, ScanSetting.WIA_VERTICAL_RESOLUTION, resoultions);
-
-            SetWIAProperty(properties, ScanSetting.WIA_VERTICAL_EXTENT, height);
-
-            SetWIAProperty(properties, ScanSetting.WIA_HORIZONTAL_EXTENT, width);
+            SetWIAProperty(properties, ScanSetting.WIA_PAGE_SIZE, 100);
 
             SetWIAProperty(properties, ScanSetting.WIA_COLOR_MODE, (int)setting.Color);
+
+            SetWIAProperty(properties, ScanSetting.WIA_HORIZONTAL_SCAN_RESOLUTION_DPI, (int)setting.Dpi);
+
+            SetWIAProperty(properties, ScanSetting.WIA_VERTICAL_SCAN_RESOLUTION_DPI, (int)setting.Dpi);
+
+            SetWIAProperty(properties, ScanSetting.WIA_VERTICAL_EXTENT, 4200); // Legal size at 300 dpi
 
         }
 

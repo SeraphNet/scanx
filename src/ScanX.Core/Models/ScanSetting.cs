@@ -22,6 +22,12 @@
 
         public const int WIA_ITEM_SIZE = 4116;
 
+        public const int WIA_PAGE_AUTO = 100;
+
+        public const int WIA_HORIZONTAL_SCAN_RESOLUTION_DPI = 6147;
+
+       public const int WIA_VERTICAL_SCAN_RESOLUTION_DPI = 6148;
+
         public enum DPI
         {
             DPI_72 = 72,

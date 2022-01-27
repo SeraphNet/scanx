@@ -26,7 +26,7 @@
 
         public const int WIA_HORIZONTAL_SCAN_RESOLUTION_DPI = 6147;
 
-       public const int WIA_VERTICAL_SCAN_RESOLUTION_DPI = 6148;
+        public const int WIA_VERTICAL_SCAN_RESOLUTION_DPI = 6148;
 
         public enum DPI
         {

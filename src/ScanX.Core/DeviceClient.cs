@@ -123,7 +123,7 @@ namespace ScanX.Core
             }
         }
 
-        private Bitmap CropImage(ImageFile image)
+        private Bitmap CropImage(ImageFile image, int dpi)
         {
             var imageBytes = (byte[])image.FileData.get_BinaryData();
             var ms = new MemoryStream(imageBytes);
@@ -151,10 +151,10 @@ namespace ScanX.Core
 
             int rightMost = Width - 1;
 
-            int topMost = 0;            
+            int topMost = 0;
 
-            int bottomMost = Height - 1; 
-            for (int row = bottomMost; row > 0; row -= 1)
+            int bottomMost = Height - 1;
+            for (int row = bottomMost; row > dpi*11 ; row -= 2)
             {
                 if (IsAllWhiteRow(row)) bottomMost = row - 1;
                 else break;
@@ -197,7 +197,7 @@ namespace ScanX.Core
         {
             var img = (ImageFile)connectedDevice.Items[1].Transfer(FormatID.wiaFormatPNG);
 
-            Bitmap cropped = CropImage(img);
+            Bitmap cropped = CropImage(img, (int)setting.Dpi);
 
             byte[] dataConverted = ImageToByte(cropped);
 
